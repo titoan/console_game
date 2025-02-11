@@ -2,7 +2,7 @@ import readline from "readline";
 import {rooms, actions } from "../models/gameModel";
 import gameView from "../views/gameView";
 import { Room, RoomsType } from "../models/gameModel";
-import { MoveCommand, ActionCommand } from "../commands/Commands";
+import { MoveCommand, ActionCommand, ExitCommand } from "../commands/Commands";
 
 
 export default class Cotnroller {
@@ -30,24 +30,21 @@ export default class Cotnroller {
     }
 
     private handleGameInput(input: string) {
-        const normalizedInput = input.toLowerCase().trim();
-    
-      // Проверка на выход
+        const normalizedInput = input.toLowerCase().trim();   
+
         if (normalizedInput === "exit") {
-            console.log("Программа завершена.");
-            this.rl.close();
-            return;
-        }
-    
-        const room = rooms[this.currentStep];
-        
-        if(this.isStep(room, normalizedInput)){
-            new MoveCommand(this, normalizedInput).execute();            
-        } else if (this.isAction(room, normalizedInput)){
-            new ActionCommand(this, normalizedInput).execute();
+            new ExitCommand(this).execute();
         } else {
-            console.log("Неверное направление. Попробуйте снова.");
-            gameView.displayAllRoomInfo(rooms, this.currentStep);
+            const room = rooms[this.currentStep];
+        
+            if(this.isStep(room, normalizedInput)){
+                new MoveCommand(this, normalizedInput).execute();            
+            } else if (this.isAction(room, normalizedInput)){
+                new ActionCommand(this, normalizedInput).execute();
+            } else {
+                console.log("Неверное направление. Попробуйте снова.");
+                gameView.displayAllRoomInfo(rooms, this.currentStep);
+            }
         }
     }
 
@@ -65,6 +62,10 @@ export default class Cotnroller {
 
     set CurrentStep(value: string) {
         this.currentStep = value
+    }
+
+    get Rl(){
+        return this.rl
     }
 }
 

@@ -39,7 +39,20 @@ export class ActionCommand implements Command {
         gameView.displayAllRoomInfo(rooms, this.controller.CurrentStep);
         console.log("\n(Введите 'exit' для завершения программы.)");
     }
+}
 
+export class ExitCommand implements Command {
+    private controller: Cotnroller    
+
+    constructor(controller: Cotnroller){
+        this.controller = controller;
+    }
+
+    execute(): void {
+        console.log("Программа завершена.");
+        this.controller.Rl.close();
+        return;
+    }
 }
 
 // ! при помощи команд управлять состояние контроллера. Вот так всё просто оказывается. 
