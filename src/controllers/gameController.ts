@@ -30,7 +30,7 @@ export default class Cotnroller {
     }
 
     private handleGameInput(input: string) {
-        const normalizedInput = input.toLowerCase();
+        const normalizedInput = input.toLowerCase().trim();
     
       // Проверка на выход
         if (normalizedInput === "exit") {
