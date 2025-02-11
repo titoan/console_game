@@ -1,9 +1,9 @@
 export type RoomsType = {[key: string]: Room}
 
-export interface Room {
-	actions?: { [key: string]: string }
+export interface Room {	
   description: string;
   steps: { [key: string]: string }; 
+  actions: { [key: string]: string }
 }
 
 export const rooms: RoomsType = {
@@ -15,6 +15,7 @@ export const rooms: RoomsType = {
       налево: "bathroom",
       направо: "exit_outside",
     },
+    actions:{}
   },
   room_center: {
     description:
@@ -44,19 +45,19 @@ export const rooms: RoomsType = {
     steps: {
       назад: "start",
     },
+    actions:{}
   },
   exit_outside: {
     description: "Ты вышел из дома. Что дальше? Ты можешь идти назад.",
     steps: {
       назад: "start",
     },
+    actions:{}
   },
 };
 
-export interface Action {
-	// actions?: { [key: string]: string }
+export interface Action {	
   description: string;
-  // steps: { [key: string]: string }; // Направление: Следующее состояние
 }
 
 export const actions: { [key: string]: Action } = {

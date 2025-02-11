@@ -2,6 +2,8 @@ import readline from "readline";
 import {rooms, actions } from "../models/gameModel";
 import gameView from "../views/gameView";
 import { Room, RoomsType } from "../models/gameModel";
+import { MoveCommand, ActionCommand } from "../commands/Commands";
+
 
 export default class Cotnroller {
     // интерфейс для чтения ввода
@@ -12,6 +14,7 @@ export default class Cotnroller {
 
     // Текущее состояние игры
     currentStep = "start";
+    currentAction = "";
 
     constructor() {
         // Начинаем игру при создании экземпляра
@@ -38,31 +41,14 @@ export default class Cotnroller {
         }
     
         const room = rooms[this.currentStep];
-        let nextStep;    
-        let roomAction;
-    
         
         if(this.isStep(room, normalizedInput)){
-            nextStep = room.steps[normalizedInput];
+            new MoveCommand(this, normalizedInput).execute();            
         } else if (this.isAction(room, normalizedInput)){
-            roomAction = room.actions? room.actions[normalizedInput] : ""
+            new ActionCommand(this, normalizedInput).execute();
         } else {
             console.log("Неверное направление. Попробуйте снова.");
             gameView.displayAllRoomInfo(rooms, this.currentStep);
-        }
-    
-        if (nextStep) {
-            this.currentStep = nextStep;
-            gameView.displayAllRoomInfo(rooms, this.currentStep)
-            console.log("\n(Введите 'exit' для завершения программы.)");
-            nextStep = null
-        } else {
-            if (roomAction) {
-                let currAction = actions[roomAction]
-                gameView.displayChoosenAction(currAction);
-                gameView.displayAllRoomInfo(rooms, this.currentStep)
-                roomAction = null
-            } 
         }
     }
 
