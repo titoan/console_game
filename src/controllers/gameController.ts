@@ -13,8 +13,7 @@ export default class Cotnroller {
     });
 
     // Текущее состояние игры
-    currentStep = "start";
-    currentAction = "";
+    private currentStep = "start";
 
     constructor() {
         // Начинаем игру при создании экземпляра
@@ -58,6 +57,14 @@ export default class Cotnroller {
     
     private isAction(room: Room, normalizedInput: string): boolean {
         return room.actions ? room.actions.hasOwnProperty(normalizedInput) : false
+    }
+
+    get CurrentStep(): string {
+        return this.currentStep;
+    }
+
+    set CurrentStep(value: string) {
+        this.currentStep = value
     }
 }
 

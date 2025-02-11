@@ -16,9 +16,9 @@ export class MoveCommand implements Command {
     }
 
     execute(): void {
-        let room = rooms[this.controller.currentStep]
-        this.controller.currentStep = room.steps[this.direction];
-        gameView.displayAllRoomInfo(rooms, this.controller.currentStep)
+        let room = rooms[this.controller.CurrentStep]
+        this.controller.CurrentStep = room.steps[this.direction];
+        gameView.displayAllRoomInfo(rooms, this.controller.CurrentStep)
         console.log("\n(Введите 'exit' для завершения программы.)");
     }
 }
@@ -33,10 +33,10 @@ export class ActionCommand implements Command {
     }
 
     execute(): void {
-        let room = rooms[this.controller.currentStep]
+        let room = rooms[this.controller.CurrentStep]
         let action = actions[room.actions[this.action]]
         gameView.displayChoosenAction(action);
-        gameView.displayAllRoomInfo(rooms, this.controller.currentStep);
+        gameView.displayAllRoomInfo(rooms, this.controller.CurrentStep);
         console.log("\n(Введите 'exit' для завершения программы.)");
     }
 
