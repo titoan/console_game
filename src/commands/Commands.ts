@@ -34,8 +34,8 @@ export class ActionCommand implements Command {
 
     execute(): void {
         let room = rooms[this.controller.CurrentStep]
-        let action = actions[room.actions[this.action]]
-        gameView.displayChoosenAction(action);
+        let currAction = actions[room.actions[this.action]]
+        gameView.displayChoosenAction(currAction);
         gameView.displayAllRoomInfo(rooms, this.controller.CurrentStep);
         console.log("\n(Введите 'exit' для завершения программы.)");
     }
