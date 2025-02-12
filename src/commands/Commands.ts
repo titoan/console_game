@@ -54,5 +54,3 @@ export class ExitCommand implements Command {
         return;
     }
 }
-
-// ! при помощи команд управлять состояние контроллера. Вот так всё просто оказывается. 
