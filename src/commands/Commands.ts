@@ -1,4 +1,4 @@
-import Cotnroller from "../controllers/gameController";
+import Game from "../models/gameClass";
 import { rooms, actions } from "../models/gameModel";
 import gameView from "../views/gameView";
 
@@ -7,50 +7,50 @@ interface Command {
 }
 
 export class MoveCommand implements Command {
-    controller: Cotnroller
+    game: Game
     direction: string
 
-    constructor(controller: Cotnroller, direction: string){
-        this.controller = controller;
+    constructor(game: Game, direction: string){
+        this.game = game;
         this.direction = direction;
     }
 
     execute(): void {
-        let room = rooms[this.controller.CurrentStep]
-        this.controller.CurrentStep = room.steps[this.direction];
-        gameView.displayAllRoomInfo(rooms, this.controller.CurrentStep)
+        let room = rooms[this.game.CurrentStep]
+        this.game.CurrentStep = room.steps[this.direction];
+        gameView.displayAllRoomInfo(rooms, this.game.CurrentStep)
         console.log("\n(Введите 'exit' для завершения программы.)");
     }
 }
 
 export class ActionCommand implements Command {
-    private controller: Cotnroller
+    private game: Game
     private action: string
 
-    constructor(controller: Cotnroller, action: string) {
-        this.controller = controller;
+    constructor(game: Game, action: string) {
+        this.game = game;
         this.action = action;
     }
 
     execute(): void {
-        let room = rooms[this.controller.CurrentStep]
+        let room = rooms[this.game.CurrentStep]
         let currAction = actions[room.actions[this.action]]
         gameView.displayChoosenAction(currAction);
-        gameView.displayAllRoomInfo(rooms, this.controller.CurrentStep);
+        gameView.displayAllRoomInfo(rooms, this.game.CurrentStep);
         console.log("\n(Введите 'exit' для завершения программы.)");
     }
 }
 
 export class ExitCommand implements Command {
-    private controller: Cotnroller    
+    private game: Game    
 
-    constructor(controller: Cotnroller){
-        this.controller = controller;
+    constructor(game: Game){
+        this.game = game;
     }
 
     execute(): void {
         console.log("Программа завершена.");
-        this.controller.Rl.close();
+        this.game.Rl.close();
         return;
     }
 }
