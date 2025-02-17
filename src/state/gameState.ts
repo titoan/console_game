@@ -28,8 +28,7 @@ export class StartGame implements IGameStates {
     }
 
     gameInProicess(): void {
-        this.game.setState(new ProcessingGame(this.game));
-        // console.log("Игра ещё не началась")
+        this.game.setState(new ProcessingGame(this.game));        
     }
 
     endGame(): void {
