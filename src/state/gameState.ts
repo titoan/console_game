@@ -18,17 +18,18 @@ export class StartGame implements IGameStates {
     }
 
     startGame(): void {
+        this.game.CurrentStep = "start";
         console.log("Привет! Как тебя зовут?");
         this.game.Rl.once("line", (name) => {
         console.log(`Очень приятно, ${name}!`);
-        gameView.displayStepList(rooms, this.game.CurrentStep);
-        this.game.setState(new ProcessingGame(this.game));
-        // this.game.Rl.on("line", this.game.handleGameInput.bind(this)); 
+        gameView.displayStepList(rooms, this.game.CurrentStep);        
+        this.gameInProicess()
         });
     }
 
     gameInProicess(): void {
-
+        this.game.setState(new ProcessingGame(this.game));
+        // console.log("Игра ещё не началась")
     }
 
     endGame(): void {
@@ -40,7 +41,8 @@ class ProcessingGame implements IGameStates {
     private game: Game
 
     constructor (game: Game,) {
-        this.game = game        
+        this.game = game;
+        this.game.Rl.removeAllListeners("line")
         this.game.Rl.on("line", this.game.gameInProicess.bind(this.game));
     }
 
@@ -52,7 +54,7 @@ class ProcessingGame implements IGameStates {
         const normalizedInput = input.toLowerCase().trim();   
 
             if (normalizedInput === "exit") {
-                new ExitCommand(this.game).execute();
+                this.game.setState(new EndGame(this.game));
             } else {
                 const room = rooms[this.game.CurrentStep];
             
@@ -69,5 +71,38 @@ class ProcessingGame implements IGameStates {
 
     endGame(): void {
 
+    }
+}
+
+class EndGame implements IGameStates {
+    private game: Game
+
+    constructor (game: Game) {
+        this.game = game;
+        console.log("Вы звершили игру. Для выхода из программы введите команду 'exit' ")
+        console.log("Для того, чтобы начать новую игру введите команду 'start' ")
+        this.game.Rl.removeAllListeners("line")
+        this.game.Rl.on("line", this.game.gameInProicess.bind(this.game));
+    }
+
+    startGame(): void {
+        this.game.setState(new StartGame(this.game));
+    }
+
+    gameInProicess(input: string): void {
+        const normalizedInput = input.toLowerCase().trim();
+
+        if (normalizedInput === "start") {
+            this.game.Rl.removeAllListeners("line")
+            this.startGame(); 
+        } else if (normalizedInput === "exit") {
+            this.endGame(); 
+        } else {
+            console.log("Неизвестная команда. Введите 'start' для новой игры или 'exit' для выхода.");
+        }
+    }
+
+    endGame(): void {
+        new ExitCommand(this.game).execute();
     }
 }
