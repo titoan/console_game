@@ -54,8 +54,11 @@ class ProcessingGame implements IGameStates {
         const normalizedInput = input.toLowerCase().trim();   
 
             if (normalizedInput === "exit") {
-                this.game.setState(new EndGame(this.game));
-            } else {
+                this.endGame();                
+            } else if (normalizedInput === "start") {
+                this.startGame();
+            } 
+            else {
                 const room = rooms[this.game.CurrentStep];
             
                 if(this.game.isStep(room, normalizedInput)){
@@ -70,7 +73,7 @@ class ProcessingGame implements IGameStates {
     }
 
     endGame(): void {
-
+        this.game.setState(new EndGame(this.game));
     }
 }
 
